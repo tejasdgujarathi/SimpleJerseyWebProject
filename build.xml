@@ -1,0 +1,33 @@
+<project name="SimpleJerseyWebProject" basedir="." default="clean">
+	
+	<target name="clean">
+		<echo>Cleaning The WebApps Directory For Fresh Deployment</echo>
+		<delete dir="D:/apache-tomcat-7.0.27/webapps/SimpleJerseyWebProject"/>
+	</target>
+
+	<target name="compile" depends="clean">
+		<echo>Compiling Java Source Code</echo>
+		<javac srcdir="WEB-INF/src" destdir="WEB-INF/classes"/>
+	</target>
+
+
+	<target name="war" depends="compile">
+		<echo>Creating war file</echo>
+		
+		<war destfile="build/SimpleJerseyWebProject.war" webxml="WEB-INF/web.xml"> <!-- needxmlfile="true" by default-->  
+			<fileset dir="indexpage" />
+			
+			<lib dir="WEB-INF/lib">
+				 <include name="**/*.*"/>
+			</lib>
+			
+			<classes dir="WEB-INF/classes"  />
+		</war>
+	</target>
+
+	<target name="deploy" depends="war">
+		<echo>Copying war to tomcat webapps</echo>
+		<copy file="build/SimpleJerseyWebProject.war" overwrite="false" todir="D:/apache-tomcat-7.0.27/webapps" />
+	</target>
+
+</project>
